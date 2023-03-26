@@ -1,7 +1,6 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
-
 /**
  * _printf - a function that prints a data type with its corresponding input
  * to the stdout and finishes with a new line
@@ -20,27 +19,33 @@ int _printf(const char *format, ...)
 	va_start(args, format);
 	while (format[i])
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
 			counter++;
+			i++;
 		}
-		if (*format == 'c')
+		if (format[i] == 'c')
 		{
 			c = va_arg(args, int);
 			write(1, &c, 1);
 			counter++;
 		}
-		else if (*format == 's')
+		else if (format[i] == 's')
 		{
 			s = va_arg(args, char *);
-			while (s[i] != '\0')
+			while (*s != '\0')
 			{
-				i++;
+				write(1, s, 1);
+				s++;
+				counter++;
 			}
-			counter += i;
-			write(1, s, i);
 		}
-		else if (*format == '%')
+		else if (format[i] == 'b')
+		{
+			print_binary(va_arg(args, unsigned int));
+			counter++;
+		}
+		else if (format[i] == '%')
 		{
 			write(1, &format[i], 1);
 			counter++;
